@@ -2,8 +2,9 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import { VantResolver } from "unplugin-vue-components/resolvers";
+import { VantResolver } from "@vant/auto-import-resolver";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import path from "path";
 import mockDevServerPlugin from "vite-plugin-mock-dev-server";
@@ -12,7 +13,7 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import { enableCDN } from "./build/cdn";
 
 // 当前工作目录路径
-const root: string = process.cwd();
+const root = process.cwd();
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -25,15 +26,19 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       mockDevServerPlugin(),
       // vant 组件自动按需引入
+      AutoImport({
+        dts: false,
+        resolvers: [VantResolver()]
+      }),
       Components({
-        dts: "src/typings/components.d.ts",
+        dts: false,
         resolvers: [VantResolver()]
       }),
       // svg icon
       createSvgIconsPlugin({
         // 指定图标文件夹
         iconDirs: [path.resolve(root, "src/icons/svg")],
-        // 指定 symbolId 格式
+        // 指定 symbolId 格vant
         symbolId: "icon-[dir]-[name]"
       }),
       // 生产环境 gzip 压缩资源
@@ -52,7 +57,17 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url))
-      }
+      },
+      extensions: [
+        ".js",
+        ".css",
+        ".vue",
+        ".json",
+        ".less",
+        ".jsx",
+        ".ejs",
+        ".mjs"
+      ] // 导入时想要省略的扩展名列表
     },
     server: {
       host: true,

@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { store } from "./store";
+import { store } from "./store/index.js";
 // normalize.css
 import "normalize.css/normalize.css";
 // 全局样式
@@ -10,7 +10,7 @@ import "./styles/tailwind.css";
 import "virtual:svg-icons-register";
 
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/index.js";
 
 const app = createApp(App);
 app.use(store);

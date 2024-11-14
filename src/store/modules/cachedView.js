@@ -1,27 +1,26 @@
 import { defineStore } from "pinia";
 import { store } from "@/store";
-import type { toRouteType } from "@/router";
 
 export const useCachedViewStore = defineStore({
   id: "cached-view",
   state: () => ({
     // 缓存页面 keepAlive
-    cachedViewList: [] as string[]
+    cachedViewList: []
   }),
   actions: {
-    addCachedView(view: toRouteType) {
+    addCachedView(view) {
       // 不重复添加
-      if (this.cachedViewList.includes(view.name as string)) return;
+      if (this.cachedViewList.includes(view.name)) return;
       if (!view?.meta?.noCache) {
-        this.cachedViewList.push(view.name as string);
+        this.cachedViewList.push(view.name);
       }
     },
-    delCachedView(view: toRouteType) {
-      const index = this.cachedViewList.indexOf(view.name as string);
+    delCachedView(view) {
+      const index = this.cachedViewList.indexOf(view.name);
       index > -1 && this.cachedViewList.splice(index, 1);
     },
     delAllCachedViews() {
-      this.cachedViewList = [] as string[];
+      this.cachedViewList = [];
     }
   }
 });

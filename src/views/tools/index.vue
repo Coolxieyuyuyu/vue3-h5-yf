@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { getListApi, getListApiError } from "@/api/mock";
 import { reactive } from "vue";
 import { showFailToast, showSuccessToast } from "vant";
@@ -14,7 +14,7 @@ defineOptions({
   name: "Tools"
 });
 
-const showList: string[] = reactive([]);
+const showList = reactive([]);
 
 const handleSuccessReq = async () => {
   const { list } = await getListApi();

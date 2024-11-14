@@ -1,8 +1,7 @@
 import Layout from "@/layout/index.vue";
-import type { RouteRecordRaw } from "vue-router";
 import Demo from "@/views/demo/index.vue";
 
-const routes: Array<RouteRecordRaw> = [
+const routes = [
   {
     path: "/",
     name: "root",

@@ -1,14 +1,16 @@
-<script setup lang="ts">
+<script setup>
 import { isExternal } from "@/utils/validate";
 import { computed } from "vue";
 
-interface Props {
-  name: string;
-  className?: string;
-}
-const props = withDefaults(defineProps<Props>(), {
-  name: "",
-  className: ""
+const props = defineProps({
+  name: {
+    default: "",
+    type: String
+  },
+  className: {
+    default: "",
+    type: String
+  }
 });
 
 const isExternalIcon = computed(() => isExternal(props.name));
