@@ -18,7 +18,7 @@ export const useDarkModeStore = defineStore({
     darkMode: isDarkMode()
   }),
   actions: {
-    toggleDarkMode(event?: TouchEvent | MouseEvent) {
+    toggleDarkMode(event) {
       const isAppearanceTransition =
         "startViewTransition" in document &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -39,7 +39,7 @@ export const useDarkModeStore = defineStore({
         return;
       }
 
-      let x: number, y: number;
+      let x, y;
       if (event instanceof TouchEvent) {
         x = event.touches[0].clientX;
         y = event.touches[0].clientY;
@@ -56,7 +56,7 @@ export const useDarkModeStore = defineStore({
         Math.max(y, window.innerHeight - y)
       );
 
-      const transition = (document as any).startViewTransition(async () => {
+      const transition = document.startViewTransition(async () => {
         toggle();
         await nextTick();
       });

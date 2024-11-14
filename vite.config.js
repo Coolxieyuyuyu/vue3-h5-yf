@@ -12,7 +12,7 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import { enableCDN } from "./build/cdn";
 
 // 当前工作目录路径
-const root: string = process.cwd();
+const root = process.cwd();
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -26,7 +26,6 @@ export default defineConfig(({ mode }) => {
       mockDevServerPlugin(),
       // vant 组件自动按需引入
       Components({
-        dts: "src/typings/components.d.ts",
         resolvers: [VantResolver()]
       }),
       // svg icon
@@ -52,7 +51,17 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url))
-      }
+      },
+      extensions: [
+        ".js",
+        ".css",
+        ".vue",
+        ".json",
+        ".less",
+        ".jsx",
+        ".ejs",
+        ".mjs"
+      ] // 导入时想要省略的扩展名列表
     },
     server: {
       host: true,

@@ -1,9 +1,4 @@
-import Axios, {
-  type AxiosInstance,
-  type AxiosError,
-  type AxiosResponse,
-  type AxiosRequestConfig
-} from "axios";
+import Axios from "axios";
 import { ContentTypeEnum, ResultEnum } from "@/enums/requestEnum";
 import NProgress from "../progress";
 import { showFailToast } from "vant";
@@ -20,13 +15,8 @@ const configDefault = {
 };
 
 class Http {
-  // 当前实例
-  private static axiosInstance: AxiosInstance;
-  // 请求配置
-  private static axiosConfigDefault: AxiosRequestConfig;
-
   // 请求拦截
-  private httpInterceptorsRequest(): void {
+  httpInterceptorsRequest() {
     Http.axiosInstance.interceptors.request.use(
       config => {
         NProgress.start();
@@ -36,7 +26,7 @@ class Http {
         // }
         return config;
       },
-      (error: AxiosError) => {
+      error => {
         showFailToast(error.message);
         return Promise.reject(error);
       }
@@ -44,9 +34,9 @@ class Http {
   }
 
   // 响应拦截
-  private httpInterceptorsResponse(): void {
+  httpInterceptorsResponse() {
     Http.axiosInstance.interceptors.response.use(
-      (response: AxiosResponse) => {
+      response => {
         NProgress.done();
         // 与后端协定的返回字段
         const { code, result } = response.data;
@@ -64,7 +54,7 @@ class Http {
           return Promise.reject(response.data);
         }
       },
-      (error: AxiosError) => {
+      error => {
         NProgress.done();
         // 处理 HTTP 网络错误
         let message = "";
@@ -114,7 +104,7 @@ class Http {
     );
   }
 
-  constructor(config: AxiosRequestConfig) {
+  constructor(config) {
     Http.axiosConfigDefault = config;
     Http.axiosInstance = Axios.create(config);
     this.httpInterceptorsRequest();
@@ -122,12 +112,12 @@ class Http {
   }
 
   // 通用请求函数
-  public request<T>(paramConfig: AxiosRequestConfig): Promise<T> {
+  request(paramConfig) {
     const config = { ...Http.axiosConfigDefault, ...paramConfig };
     return new Promise((resolve, reject) => {
       Http.axiosInstance
         .request(config)
-        .then((response: any) => {
+        .then(response => {
           resolve(response);
         })
         .catch(error => {

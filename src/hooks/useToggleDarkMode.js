@@ -4,6 +4,6 @@ export function useDarkMode() {
   return useDarkModeStoreHook().darkMode;
 }
 
-export function useToggleDarkMode(event?: TouchEvent | MouseEvent) {
+export function useToggleDarkMode(event) {
   useDarkModeStoreHook().toggleDarkMode(event);
 }
